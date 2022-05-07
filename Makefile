@@ -4,24 +4,26 @@
 #  Utilities
 # ------------------------------------------------------------
 
-BREW_INSTALL = brew install --quiet
-INSTALL_MSG  = echo '[✓] Installed:'
+BREW_INSTALL = 
 
 .PHONY: brew-install-%
 brew-install-%: brew
-	@$(BREW_INSTALL) $*
-	@$(INSTALL_MSG) $*
+	@brew install --quiet $*
+	@echo '[✓] Installed: $*'
 
 # ------------------------------------------------------------
 #  Meta-targets
 # ------------------------------------------------------------
 
 .PHONY: setup
-setup: files brew neovim zplug other-random-dev-packages
+setup: files prerequisites core-packages other-random-dev-packages
 
 # ------------------------------------------------------------
 #  Prerequisites
 # ------------------------------------------------------------
+
+.PHONY: prerequisites
+prerequisites: brew
 
 .PHONY: brew
 brew:
@@ -33,6 +35,9 @@ brew:
 #  Packages
 # ------------------------------------------------------------
 
+.PHONY: core-packages
+core-packages: brew-install-neovim brew-install-starship brew-install-zplug brew-install-golang
+
 .PHONY: neovim
 neovim: brew-install-neovim
 
@@ -41,6 +46,9 @@ starship: brew-install-starship
 
 .PHONY: zplug
 zplug: brew-install-zplug
+
+.PHONY: golang
+golang: brew-install-golang
 
 .PHONY: other-random-dev-packages
 other-random-dev-packages: brew-install-ripgrep brew-install-tree
