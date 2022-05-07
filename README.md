@@ -2,5 +2,5 @@
 dotfiles. for macs.
 
 ```
-$ ./setup.sh
+$ make
 ```
