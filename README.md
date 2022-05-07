@@ -1,2 +1,6 @@
 # osx-dotfiles
-dotfiles for macs
+dotfiles. for macs.
+
+```
+$ ./setup.sh
+```
