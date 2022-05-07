@@ -1,11 +1,11 @@
 .DEFAULT_GOAL = setup
 
-BREW_INSTALL = brew install --quiet
-INSTALL_MSG = echo '[✓] Installed:'
-
 # ------------------------------------------------------------
 #  Utilities
 # ------------------------------------------------------------
+
+BREW_INSTALL = brew install --quiet
+INSTALL_MSG  = echo '[✓] Installed:'
 
 .PHONY: brew-install-%
 brew-install-%: brew
