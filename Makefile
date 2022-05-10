@@ -36,7 +36,13 @@ brew:
 # ------------------------------------------------------------
 
 .PHONY: core-packages
-core-packages: brew-install-neovim brew-install-starship brew-install-zplug brew-install-golang
+core-packages: \
+	brew-install-golang \
+	brew-install-neovim \
+	brew-install-node \
+	brew-install-starship \
+	brew-install-the_silver_searcher \
+	brew-install-zplug
 
 .PHONY: neovim
 neovim: brew-install-neovim
@@ -48,7 +54,7 @@ starship: brew-install-starship
 zplug: brew-install-zplug
 
 .PHONY: golang
-golang: brew-install-golang
+golang: brew-install-golang brew-install-golangci-lint
 
 .PHONY: other-random-dev-packages
 other-random-dev-packages: brew-install-ripgrep brew-install-tree
