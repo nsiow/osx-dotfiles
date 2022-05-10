@@ -4,11 +4,14 @@
 #  Utilities
 # ------------------------------------------------------------
 
-BREW_INSTALL = 
-
 .PHONY: brew-install-%
 brew-install-%: brew
 	@brew install --quiet $*
+	@echo '[✓] Installed: $*'
+
+.PHONY: brew-cask-%
+brew-cask-%: brew
+	@brew install --cask --quiet $*
 	@echo '[✓] Installed: $*'
 
 # ------------------------------------------------------------
@@ -37,6 +40,7 @@ brew:
 
 .PHONY: core-packages
 core-packages: \
+	brew-cask-docker \
 	brew-install-golang \
 	brew-install-neovim \
 	brew-install-node \
