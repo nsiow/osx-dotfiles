@@ -6,6 +6,7 @@ DEVICES=(
 function bt-pair() {
   for DEVICE in ${DEVICES[@]}; do
     echo "Pairing $DEVICE..."
+    blueutil --pair "$DEVICE"
     blueutil --connect "$DEVICE" --wait-connect "$DEVICE"
   done
 
@@ -15,7 +16,7 @@ function bt-pair() {
 function bt-unpair() {
   for DEVICE in ${DEVICES[@]}; do
     echo "Unpairing $DEVICE..."
-    blueutil --disconnect "$DEVICE" --wait-disconnect "$DEVICE"
+    blueutil --unpair "$DEVICE"
   done
 
   echo "All devices unpaired"
