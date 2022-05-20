@@ -18,3 +18,4 @@ alias p='pbpaste'
 
 # vim stuff
 alias vim='nvim'
+alias scratch='nvim ~/scratch.txt'
