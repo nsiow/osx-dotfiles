@@ -62,6 +62,7 @@ nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
 " Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 " Plug 'junegunn/fzf.vim'
 " let g:fzf_nvim_statusline = 0 " disable statusline overwriting
+" let $FZF_DEFAULT_COMMAND = 'rg --files --hidden -g "!.git/"'
 " 
 " nnoremap <silent> <leader><space> :Files<CR>
 " nnoremap <silent> <leader>a :Buffers<CR>
@@ -149,12 +150,26 @@ else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
+" Applying codeAction to the selected region.
+" Example: `<leader>aw` for current word
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-" GoTo code navigation
+" GoTo code navigation.
+"nnoremap <silent> gd <Plug>(coc-definition)
+"nnoremap <silent> gy <Plug>(coc-type-definition)
+"nnoremap <silent> gi <Plug>(coc-implementation)
+"nnoremap <silent> gr <Plug>(coc-references)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)

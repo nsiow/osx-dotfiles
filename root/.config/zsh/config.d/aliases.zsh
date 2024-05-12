@@ -9,6 +9,7 @@ alias conf-edit-zplug='vim ~/.config/zsh/config.d/zplug.zsh'
 alias conf-edit-work='vim ~/.config/zsh/config.d/work.zsh'
 alias conf-edit-vimrc='vim ~/.config/nvim/init.vim'
 alias conf-edit-emacs='e ~/.config/doom/init.el'
+alias conf-edit-omz='vim ~/.config/zsh/config.d/omz.zsh'
 
 # Directory stuff
 alias src='cd ~/src'
@@ -34,3 +35,4 @@ alias e='emacs-edit'
 
 # functions
 alias py2js='python3 -c "import ast, json, sys; print(json.dumps(ast.literal_eval(sys.stdin.read())))"'
+alias scratch='nvim ~/scratch.txt'

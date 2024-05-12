@@ -1,6 +1,7 @@
 {
   "python.pythonPath": "/opt/homebrew/bin/python3",
   "diagnostic.virtualTextCurrentLineOnly": false,
+  "java.home": "/Users/nsiow/.sdkman/candidates/java/11.0.15-zulu",
   "languageserver": {
     "golang": {
       "command": "gopls",

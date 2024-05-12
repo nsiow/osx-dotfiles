@@ -1,7 +1,9 @@
 # ~/.zshrc
 
-for conf in "$HOME/.config/zsh/config.d/"*.zsh; do
-  source "${conf}"
+source ~/.config/zsh/config.d/omz.zsh
+
+for conf in $(ls "$HOME/.config/zsh/config.d/" | grep -E '\.zsh$'| grep -v omz); do
+  source "$HOME/.config/zsh/config.d/${conf}"
 done
 unset conf
 

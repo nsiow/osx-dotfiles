@@ -76,7 +76,6 @@ files:
 
 	@# Set up zshrc
 	@ln -f $$(pwd)/root/.zshrc ~/.zshrc
-	@mv ~/.zfunc /tmp/old_zfunc || :
 	@ln -s $$(pwd)/root/.zfunc ~/.zfunc
 
 	@# Set up .config directories
