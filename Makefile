@@ -41,6 +41,7 @@ brew:
 .PHONY: core-packages
 core-packages: \
 	brew-cask-docker \
+	brew-cask-emacs \
 	brew-install-golang \
 	brew-install-neovim \
 	brew-install-node \
@@ -75,6 +76,8 @@ files:
 
 	@# Set up zshrc
 	@ln -f $$(pwd)/root/.zshrc ~/.zshrc
+	@mv ~/.zfunc /tmp/old_zfunc || :
+	@ln -s $$(pwd)/root/.zfunc ~/.zfunc
 
 	@# Set up .config directories
 	@ls root/.config | xargs -I{} bash -c 'rm -f ~/.config/{} && ln -s $$(pwd)/root/.config/{} ~/.config/{}'

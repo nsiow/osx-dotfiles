@@ -6,7 +6,11 @@ DEVICES=(
 function bt-pair() {
   for DEVICE in ${DEVICES[@]}; do
     echo "Pairing $DEVICE..."
-    blueutil --pair "$DEVICE"
+    sleep 1
+    blueutil --unpair "$DEVICE" --info "$DEVICE"
+    sleep 1
+    blueutil --pair "$DEVICE" --info "$DEVICE"
+    sleep 1
     blueutil --connect "$DEVICE" --wait-connect "$DEVICE"
   done
 

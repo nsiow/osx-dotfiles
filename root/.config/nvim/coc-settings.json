@@ -1,0 +1,17 @@
+{
+  "python.pythonPath": "/opt/homebrew/bin/python3",
+  "diagnostic.virtualTextCurrentLineOnly": false,
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"]
+    }
+  },
+  "go.goplsEnv": {
+    "GOFLAGS": "-tags=testonly"
+  },
+  "go.buildFlags": [
+    "-tags=testonly"
+  ]
+}
