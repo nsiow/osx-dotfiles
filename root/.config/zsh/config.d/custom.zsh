@@ -2,6 +2,9 @@
 export CLICOLOR=1
 zstyle ':completion:*' menu select
 
+# path stuff
+export PATH="$PATH:/opt/homebrew/bin"
+
 # emacs stuff
 export PATH="$PATH:/Users/nsiow/.config/emacs/bin"
 

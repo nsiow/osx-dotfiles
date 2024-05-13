@@ -1,87 +1,56 @@
-" bookmark:general
+" --------------------------------------------------------------------------------
+" options
+" --------------------------------------------------------------------------------
 
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 
-" set cursorline
 set clipboard=unnamedplus
 set completeopt=noinsert,menuone,noselect
+set expandtab
+set formatoptions-=cro
 set hidden
 set inccommand=split
+set mouse=a
 set number
+set shiftwidth=2
 set splitbelow splitright
+set tabstop=2
 set title
 set ttimeoutlen=0
 set wildmenu
 
-set expandtab
-set shiftwidth=2
-set tabstop=2
+" --------------------------------------------------------------------------------
+" navigation
+" --------------------------------------------------------------------------------
 
-set mouse=nicr
-
-" command JQ %!jq .<cr>
-" autocmd FileType json autocmd BufWritePre <buffer> %!jq .
-
-" Real basic stuff
-filetype plugin indent on
-syntax on
-
-" Colors
-set t_Co=256
-
-" Pane navigation
 nmap <silent> <c-k> :wincmd k<CR>
 nmap <silent> <c-j> :wincmd j<CR>
 nmap <silent> <c-h> :wincmd h<CR>
 nmap <silent> <c-l> :wincmd l<CR>
 
-" bookmark:vim-plug
+" --------------------------------------------------------------------------------
+" vim-plug
+" --------------------------------------------------------------------------------
 
 call plug#begin()
 
-" bookmark:vim-plug:general
-
+" Plug 'echasnovski/mini.nvim', { 'branch': 'stable' }
+" Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
 Plug 'famiu/nvim-reload'
-
-" bookmark:telescope
-
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
-nnoremap <leader><space> <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
-" bookmark:vim-which-key
-"
+Plug 'fatih/vim-go'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
-nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-
-" bookmark:fzf
-
-" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-" Plug 'junegunn/fzf.vim'
-" let g:fzf_nvim_statusline = 0 " disable statusline overwriting
-" let $FZF_DEFAULT_COMMAND = 'rg --files --hidden -g "!.git/"'
-" 
-" nnoremap <silent> <leader><space> :Files<CR>
-" nnoremap <silent> <leader>a :Buffers<CR>
-" nnoremap <silent> <leader>A :Windows<CR>
-" nnoremap <silent> <leader>; :BLines<CR>
-" nnoremap <silent> <leader>o :BTags<CR>
-" nnoremap <silent> <leader>O :Tags<CR>
-" nnoremap <silent> <leader>? :History<CR>
-" nnoremap <silent> <leader>/ :execute 'Ag ' . input('Ag/')<CR>
-" nnoremap <silent> <leader>. :AgIn 
-
-Plug 'junegunn/vim-easy-align'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-lua/plenary.nvim'
 Plug 'preservim/nerdtree'
 
-" bookmark:vim-plug:go
+call plug#end()
 
-Plug 'fatih/vim-go'
+" --------------------------------------------------------------------------------
+" vim-go
+" --------------------------------------------------------------------------------
 
 let g:go_gopls_enabled = 1
 let g:go_gopls_options = ['-remote=auto']
@@ -89,23 +58,51 @@ let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 let g:go_referrers_mode='gopls'
 
-" bookmark:vim-plug:mini.nvim
+" --------------------------------------------------------------------------------
+" nerdtree
+" --------------------------------------------------------------------------------
 
-Plug 'echasnovski/mini.nvim', { 'branch': 'stable' }
+" nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTreeToggle<CR>
 
-" Initialize plugin system
-call plug#end()
+" --------------------------------------------------------------------------------
+" telescope
+" --------------------------------------------------------------------------------
 
-" bookmark:nerdtree
+" nnoremap <leader><space> <cmd>Telescope find_files<cr>
+" nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+" nnoremap <leader>fb <cmd>Telescope buffers<cr>
+" nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
-nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
+" --------------------------------------------------------------------------------
+" vim-which-key
+" --------------------------------------------------------------------------------
 
-" bookmark:coc
+nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+autocmd FileType which_key highlight WhichKey ctermbg=3 ctermfg=7
+autocmd FileType which_key highlight WhichKeySeperator ctermbg=12 ctermfg=7
+autocmd FileType which_key highlight WhichKeyGroup cterm=bold ctermbg=12 ctermfg=7
+autocmd FileType which_key highlight WhichKeyDesc ctermbg=12 ctermfg=7
+
+" --------------------------------------------------------------------------------
+" fzf
+" --------------------------------------------------------------------------------
+
+nnoremap <silent> <leader><space> :Files<CR>
+nnoremap <silent> <leader>a :Buffers<CR>
+nnoremap <silent> <leader>A :Windows<CR>
+nnoremap <silent> <leader>; :BLines<CR>
+nnoremap <silent> <leader>o :BTags<CR>
+nnoremap <silent> <leader>O :Tags<CR>
+nnoremap <silent> <leader>? :History<CR>
+nnoremap <silent> <leader>/ :Rg<CR>
+
+" --------------------------------------------------------------------------------
+" coc
+" --------------------------------------------------------------------------------
 
 " https://raw.githubusercontent.com/neoclide/coc.nvim/master/doc/coc-example-config.vim
+let g:coc_node_path = '/opt/homebrew/bin/node'
 
 " May need for Vim (not Neovim) since coc.nvim calculates byte offset by count
 " utf-8 byte sequence
@@ -116,7 +113,7 @@ set nowritebackup
 
 " Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
 " delays and poor user experience
-set updatetime=300
+set updatetime=150
 
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved
