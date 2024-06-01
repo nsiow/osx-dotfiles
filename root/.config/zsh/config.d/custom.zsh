@@ -21,7 +21,7 @@ export SAVEHIST=$HISTSIZE
 
 # go stuff
 # export GOPATH="$HOME/go"
-export GOROOT="/usr/local/go"
+# export GOROOT="/usr/local/go"
 export PATH="$PATH:$(go env GOPATH)/bin:${GOROOT}/bin"
 
 # python stuff

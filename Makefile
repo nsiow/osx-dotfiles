@@ -47,7 +47,7 @@ core-packages: \
 	kitty \
 	golang \
 	neovim \
-	zplug
+	omz
 
 .PHONY: docker
 docker: brew-cask-docker
@@ -61,8 +61,18 @@ neovim: brew-install-neovim
 .PHONY: golang
 golang: brew-install-golang brew-install-golangci-lint
 
-.PHONY: zplug
-zplug: brew-install-zplug
+.PHONY: omz
+omz: ~/.oh-my-zsh
+
+~/.oh-my-zsh:
+	sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+.PHONY: p10k
+p10k: ~/.oh-my-zsh/custom/themes/powerlevel10k
+	git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $${ZSH_CUSTOM:-$$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
+~/.oh-my-zsh/custom/themes/powerlevel10k:
+	echo foo
 
 .PHONY: other-random-dev-packages
 other-random-dev-packages: \
@@ -83,6 +93,6 @@ files:
 	@ln -sf $$(pwd)/root/.zshrc ~/.zshrc
 
 	@# Set up .config directories
-	@ls root/.config | xargs -I{} bash -c ' && ln -s $$(pwd)/root/.config/{} ~/.config/{}'
+	@ls root/.config | xargs -I{} bash -c 'rm -f ~/.config/{} && ln -s $$(pwd)/root/.config/{} ~/.config/{}'
 
 	@echo '[✓] Bootstrapped filesystem'
