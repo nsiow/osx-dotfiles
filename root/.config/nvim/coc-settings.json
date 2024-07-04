@@ -2,5 +2,7 @@
   "python.pythonPath": "/opt/homebrew/bin/python3",
   "diagnostic.virtualTextCurrentLineOnly": false,
   "java.home": "/Users/nsiow/.sdkman/candidates/java/11.0.15-zulu",
-  "coc.preferences.extensionUpdateCheck": "daily"
+  "coc.preferences.extensionUpdateCheck": "daily",
+  "suggest.noselect": false,
+  "suggest.enablePreselect": true
 }

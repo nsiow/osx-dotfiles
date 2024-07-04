@@ -10,6 +10,7 @@ export PATH="$PATH:/Users/nsiow/.config/emacs/bin"
 
 # fzf
 eval "$(fzf --zsh)"
+export FZF_DEFAULT_COMMAND='fd --type file --hidden'
 
 # shared history
 setopt SHARE_HISTORY
@@ -37,6 +38,10 @@ export PATH="$(brew --prefix)/lib/ruby/gems/3.2.0/bin:$PATH"
 # aws stuff
 export AWS_REGION=us-west-2
 export AWS_DEFAULT_REGION=us-west-2
+export AWS_PAGER=
+autoload bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
+complete -C '/usr/local/bin/aws_completer' aws
 
 # jq stuff
 alias urlencode='jq -Sr @uri'
