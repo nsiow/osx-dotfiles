@@ -1,24 +1,15 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# prompt
+export PS1='%c %# '
 
-# ~/.zshrc
+# env
+export EDITOR="$(which nvim)"
 
-source ~/.config/zsh/config.d/omz.zsh
+# aliases
+alias c='pbcopy'
+alias p='pbpaste'
+alias vim='nvim'
 
-for conf in $(ls "$HOME/.config/zsh/config.d/" | grep -E '\.zsh$'| grep -v omz); do
-  source "$HOME/.config/zsh/config.d/${conf}"
-done
-unset conf
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-##THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-
+# configuration
+alias conf-reload='source ~/.zshrc'
+alias conf-edit-vim='$EDITOR ~/.config/nvim/init.vim'
+alias conf-edit-zsh='$EDITOR ~/.zshrc'

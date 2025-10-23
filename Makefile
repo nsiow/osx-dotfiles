@@ -1,4 +1,4 @@
-.DEFAULT_GOAL = setup
+.DEFAULT_GOAL = install
 
 # ------------------------------------------------------------
 #  Utilities
@@ -18,64 +18,37 @@ brew-cask-%: brew
 #  Meta-targets
 # ------------------------------------------------------------
 
-.PHONY: setup
-setup: files prerequisites core-packages other-random-dev-packages
+.PHONY: install
+install: pre packages files commands
 
 # ------------------------------------------------------------
 #  Prerequisites
 # ------------------------------------------------------------
 
-.PHONY: prerequisites
-prerequisites: brew
-
-BREW_INSTALL_SCRIPT ?= \
-  https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+.PHONY: pre
+pre: brew
 
 .PHONY: brew
 brew:
 	@which brew >/dev/null \
 	  && echo '[✓] Homebrew already installed' \
-	  || /bin/bash -c "$$(curl -fsSL $(BREW_INSTALL_SCRIPT))"
+	  || /bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # ------------------------------------------------------------
 #  Packages
 # ------------------------------------------------------------
 
-.PHONY: core-packages
-core-packages: \
-	docker \
-	kitty \
-	golang \
-	neovim \
-	omz
-
-.PHONY: docker
-docker: brew-cask-docker
-
-.PHONY: kitty
-kitty: brew-cask-kitty
-
-.PHONY: neovim
-neovim: brew-install-neovim
-
-.PHONY: golang
-golang: brew-install-golang brew-install-golangci-lint
-
-.PHONY: omz
-omz: ~/.oh-my-zsh
-
-~/.oh-my-zsh:
-	sh -c "$$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-.PHONY: p10k
-p10k: ~/.oh-my-zsh/custom/themes/powerlevel10k
-	git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $${ZSH_CUSTOM:-$$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-
-~/.oh-my-zsh/custom/themes/powerlevel10k:
-	echo foo
-
-.PHONY: other-random-dev-packages
-other-random-dev-packages: \
+.PHONY: packages
+packages: \
+	brew-cask-docker \
+	brew-install-fd \
+	brew-install-fzf \
+	brew-install-gh \
+	brew-install-go \
+	brew-install-minikube \
+	brew-install-neovim \
+	brew-install-node \
+	brew-install-pyenv \
 	brew-install-ripgrep \
 	brew-install-tree
 
@@ -96,3 +69,11 @@ files:
 	@ls root/.config | xargs -I{} bash -c 'rm -f ~/.config/{} && ln -s $$(pwd)/root/.config/{} ~/.config/{}'
 
 	@echo '[✓] Bootstrapped filesystem'
+
+# ------------------------------------------------------------
+#  Commands
+# ------------------------------------------------------------
+
+.PHONY: commands
+commands:
+	@echo '[✓] Ran setup commands'

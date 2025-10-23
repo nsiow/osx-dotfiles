@@ -5,6 +5,8 @@
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 
+filetype plugin indent on
+set cc=102  " visual clarity for an actual line length max of 100
 set clipboard=unnamedplus
 set completeopt=noinsert,menuone,noselect
 set expandtab
@@ -30,25 +32,32 @@ nmap <silent> <c-h> :wincmd h<CR>
 nmap <silent> <c-l> :wincmd l<CR>
 
 " --------------------------------------------------------------------------------
+" commands
+" --------------------------------------------------------------------------------
+
+command! BufOnly silent! execute "%bd|e#|bd#"
+
+" --------------------------------------------------------------------------------
 " vim-plug
 " --------------------------------------------------------------------------------
 
 call plug#begin()
 
-" Plug 'RRethy/nvim-treesitter-textsubjects'
-" Plug 'echasnovski/mini.nvim', { 'branch': 'stable' }
-" Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
-" Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
 Plug 'famiu/nvim-reload'
 Plug 'fatih/vim-go'
+Plug 'jeffkreeftmeijer/vim-dim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'preservim/nerdtree'
+Plug 'preservim/tagbar'
+Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
+Plug 'vimwiki/vimwiki'
+Plug 'wellle/targets.vim'
 
 call plug#end()
 
@@ -56,13 +65,17 @@ call plug#end()
 " vim-go
 " --------------------------------------------------------------------------------
 
-let g:go_def_mapping_enabled = 0
-let g:go_doc_keywordprg_enabled = 0
-let g:go_gopls_enabled = 0
-" let g:go_gopls_options = ['-remote=auto']
-" let g:go_def_mode='gopls'
-" let g:go_info_mode='gopls'
-" let g:go_referrers_mode='gopls'
+au BufWritePre,FileWritePre *.go :GoImports
+" let g:go_def_mapping_enabled = 0
+" let g:go_doc_keywordprg_enabled = 0
+" let g:go_gopls_enabled = 0
+let g:go_gopls_options = ['-remote=auto']
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
+let g:go_referrers_mode='gopls'
+
+nnoremap gt  :GoTest<CR>
+nnoremap gtc :GoCoverageToggle<CR>
 
 " --------------------------------------------------------------------------------
 " nerdtree
@@ -72,36 +85,28 @@ let g:go_gopls_enabled = 0
 nnoremap <C-n> :NERDTreeToggle<CR>
 
 " --------------------------------------------------------------------------------
-" telescope
-" --------------------------------------------------------------------------------
-
-" nnoremap <leader><space> <cmd>Telescope find_files<cr>
-" nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-" nnoremap <leader>fb <cmd>Telescope buffers<cr>
-" nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
-" --------------------------------------------------------------------------------
-" vim-which-key
-" --------------------------------------------------------------------------------
-
-nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-autocmd FileType which_key highlight WhichKey ctermbg=3 ctermfg=7
-autocmd FileType which_key highlight WhichKeySeperator ctermbg=12 ctermfg=7
-autocmd FileType which_key highlight WhichKeyGroup cterm=bold ctermbg=12 ctermfg=7
-autocmd FileType which_key highlight WhichKeyDesc ctermbg=12 ctermfg=7
-
-" --------------------------------------------------------------------------------
 " fzf
 " --------------------------------------------------------------------------------
 
+let g:fzf_vim = {}
+
+" let g:fzf_vim.preview_window = []
+
+nnoremap <silent> <leader>/       :Rg<CR>
+nnoremap <silent> <leader>;       :BLines<CR>
 nnoremap <silent> <leader><space> :Files<CR>
-nnoremap <silent> <leader>a :Buffers<CR>
-nnoremap <silent> <leader>A :Windows<CR>
-nnoremap <silent> <leader>; :BLines<CR>
-nnoremap <silent> <leader>o :BTags<CR>
-nnoremap <silent> <leader>O :Tags<CR>
-nnoremap <silent> <leader>? :History<CR>
-nnoremap <silent> <leader>/ :Rg<CR>
+nnoremap <silent> <leader>?       :History<CR>
+nnoremap <silent> <leader>A       :Windows<CR>
+nnoremap <silent> <leader>O       :Tags<CR>
+nnoremap <silent> <leader>a       :Buffers<CR>
+nnoremap <silent> <leader><enter> :Commands<CR>
+nnoremap <silent> <leader>o       :BTags<CR>
+
+" --------------------------------------------------------------------------------
+" tagbar
+" --------------------------------------------------------------------------------
+
+nnoremap <silent> <leader>t :TagbarToggle<CR>
 
 " --------------------------------------------------------------------------------
 " coc
@@ -138,8 +143,9 @@ inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 " Make <CR> to accept selected completion item or notify coc.nvim to format
 " <C-g>u breaks current undo, please make your own choice
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+"                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
 function! CheckBackspace() abort
   let col = col('.') - 1
@@ -169,18 +175,6 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
-" nnoremap <silent> gd <Plug>(coc-definition)
-" nnoremap <silent> gy <Plug>(coc-type-definition)
-" nnoremap <silent> gi <Plug>(coc-implementation)
-" nnoremap <silent> gr <Plug>(coc-references)
-" nnoremap <silent> gd <Plug>(coc-definition)
-" nnoremap <silent> gy <Plug>(coc-type-definition)
-" nnoremap <silent> gi <Plug>(coc-implementation)
-" nnoremap <silent> gr <Plug>(coc-references)
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
@@ -205,8 +199,8 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+" xmap <leader>f  <Plug>(coc-format-selected)
+" nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -282,7 +276,7 @@ nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions
 nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
 " Show commands
-nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document
 nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols
@@ -303,7 +297,7 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
   highlight = {
-    enable = false,
+    enable = true,
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
     -- Using this option may slow down your editor, and you may see some duplicate highlights.
@@ -396,19 +390,22 @@ require'nvim-treesitter.configs'.setup {
 EOF
 
 " --------------------------------------------------------------------------------
-" treesitter-textsubjects
+" colorscheme
 " --------------------------------------------------------------------------------
 
-" lua <<EOF
-" require'nvim-treesitter.configs'.setup {
-"     textsubjects = {
-"         enable = true,
-"         prev_selection = ',', -- (Optional) keymap to select the previous selection
-"         keymaps = {
-"             ['.'] = 'textsubjects-smart',
-"             [';'] = 'textsubjects-container-outer',
-"             ['i;'] = { 'textsubjects-container-inner', desc = "Select inside containers (classes, functions, etc.)" },
-"         },
-"     },
-" }
-" EOF
+" setting coc selection color
+" hi CocMenuSel ctermfg=Gray guifg=#000000 guibg=#ffffff
+
+set notermguicolors
+colorscheme morning
+
+" hi CocHighlightText ctermbg=0
+" hi ColorColumn ctermfg=0
+" hi Conceal ctermfg=red ctermbg=darkgray
+" hi clear SignColumn
+
+" --------------------------------------------------------------------------------
+" vimwiki
+" --------------------------------------------------------------------------------
+
+let g:vimwiki_conceallevel=0
